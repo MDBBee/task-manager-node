@@ -1,4 +1,3 @@
-const path = require("path");
 const express = require("express");
 require("dotenv").config();
 const port = process.env.PORT || 4000;
@@ -18,11 +17,11 @@ app.get("/", (req, res) => {
 });
 
 //Router Middleware
-app.use("/api/ideas", ideasRouter);
+app.use("/api/v1/tasks", ideasRouter);
 
 const initApp = async () => {
   try {
-    await connectDB();
+    await connectDB(process.env.MONGO_URI);
     app.listen(port, () => {
       console.log(`Server listening on port: ${port}`);
     });
