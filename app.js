@@ -3,14 +3,15 @@ require("dotenv").config();
 const port = process.env.PORT || 4000;
 const connectDB = require("./db/connect.js");
 const ideasRouter = require("./routes/tasks.js");
+const notFound = require("./middleware/not-found.js");
+const errorHandler = require("./middleware/errorHandler.js");
 
 const app = express();
-
-//Public-Folder/Static folder parser
 
 //BodyParser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static("./public"));
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome Onborad gentleladies and men!" });
@@ -18,6 +19,8 @@ app.get("/", (req, res) => {
 
 //Router Middleware
 app.use("/api/v1/tasks", ideasRouter);
+app.use(notFound);
+app.use(errorHandler);
 
 const initApp = async () => {
   try {
